@@ -1,5 +1,5 @@
 
-![](./screen.png)
+![](.screen.png)
 # teamprofilemaker
 
 ## ![](https://img.shields.io/github/license/Jdlevish/teamprofilemaker/)
