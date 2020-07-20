@@ -10,17 +10,19 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("../lib/htmlRenderer");
-const teamArr = [];
+const team = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 function employeeInput() {
+    console.log(team)
+
     inquirer.prompt([
         {
             type: "list",
             name: "employeeType",
             message: "select the type of employee you would like to input",
-            choices: [, "Engineer", "Intern", "Manager"]
+            choices: ["Engineer", "Intern", "Manager", "show team"]
         }
     ]).then(result => {
         if (result.employeeType === "Manager") {
@@ -30,9 +32,11 @@ function employeeInput() {
         else if (result.employeeType === "Intern") {
             internInput()
 
-        } else {
+        } else if (result.employeeType === "Engineer") {
             engineerInput()
 
+        } else {
+            createHtml(outputPath, render(team))
         }
     })
 }
@@ -60,8 +64,8 @@ function managerInput() {
             message: "Enter the Manager's office number"
         }
     ]).then(function (response) {
-        let Manager = new Manager(response.name, response.email, response.id, response.officeNumber)
-        teamArr.push(Manager);
+        let manager = new Manager(response.name, response.email, response.id, response.officeNumber)
+        team.push(Manager);
         employeeInput()
     })
 }
@@ -88,9 +92,11 @@ function internInput() {
             message: "Enter the Intern's school"
         }
     ]).then(function (response) {
-        let Intern = new Intern(response.name, response.id, response.email, response.school)
-        teamArr.push(Intern);
+        let intern = new Intern(response.name, response.id, response.email, response.school)
+        team.push(Intern);
+        console.log(employee.getRole())
         employeeInput()
+
     })
 
 }
@@ -117,9 +123,18 @@ function engineerInput() {
             message: "Enter the Engineer's github id"
         }
     ]).then(function (response) {
-        let Engineer = new Engineer(response.name, response.id, response.email, response.github)
-        teamArr.push(Engineer);
+        console.log(response)
+        let engineer = new Engineer(response.name, response.id, response.email, response.github)
+        team.push(engineer);
         employeeInput()
+    })
+}
+function createHtml(file, data) {
+    fs.writeFile(file, data, function (err) {
+        if (err) {
+            throw err
+        }
+        console.log("view employee team profile")
     })
 }
 employeeInput()
