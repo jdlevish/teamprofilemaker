@@ -65,7 +65,7 @@ function managerInput() {
         }
     ]).then(function (response) {
         let manager = new Manager(response.name, response.email, response.id, response.officeNumber)
-        team.push(Manager);
+        team.push(manager);
         employeeInput()
     })
 }
@@ -93,8 +93,8 @@ function internInput() {
         }
     ]).then(function (response) {
         let intern = new Intern(response.name, response.id, response.email, response.school)
-        team.push(Intern);
-        console.log(employee.getRole())
+        team.push(intern);
+
         employeeInput()
 
     })
@@ -123,7 +123,7 @@ function engineerInput() {
             message: "Enter the Engineer's github id"
         }
     ]).then(function (response) {
-        console.log(response)
+
         let engineer = new Engineer(response.name, response.id, response.email, response.github)
         team.push(engineer);
         employeeInput()
