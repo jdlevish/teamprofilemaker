@@ -1,7 +1,8 @@
+
 const Manager = require("../lib/Manager");
 const Engineer = require("../lib/Engineer");
 const Intern = require("../lib/Intern");
-const inquirer = require("./node_modules/inquirer");
+const inquirer = require("../node_modules/inquirer");
 const path = require("path");
 const fs = require("fs");
 
@@ -9,10 +10,119 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("../lib/htmlRenderer");
-
+const teamArr = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+function employeeInput() {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "employeeType",
+            message: "select the type of employee you would like to input",
+            choices: [, "Engineer", "Intern", "Manager"]
+        }
+    ]).then(result => {
+        if (result.employeeType === "Manager") {
+            managerInput()
+
+        }
+        else if (result.employeeType === "Intern") {
+            internInput()
+
+        } else {
+            engineerInput()
+
+        }
+    })
+}
+
+function managerInput() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Enter the employee's name"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Input the employee's id"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter your email address."
+        },
+        {
+            type: "input",
+            name: "officeNumber",
+            message: "Enter the Manager's office number"
+        }
+    ]).then(function (response) {
+        let Manager = new Manager(response.name, response.email, response.id, response.officeNumber)
+        teamArr.push(Manager);
+        employeeInput()
+    })
+}
+function internInput() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Enter the employee's name"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Input the employee's id"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter your email address."
+        },
+        {
+            type: "input",
+            name: "school",
+            message: "Enter the Intern's school"
+        }
+    ]).then(function (response) {
+        let Intern = new Intern(response.name, response.id, response.email, response.school)
+        teamArr.push(Intern);
+        employeeInput()
+    })
+
+}
+function engineerInput() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Enter the employee's name"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Input the employee's id"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter your email address."
+        },
+        {
+            type: "input",
+            name: "github",
+            message: "Enter the Engineer's github id"
+        }
+    ]).then(function (response) {
+        let Engineer = new Engineer(response.name, response.id, response.email, response.github)
+        teamArr.push(Engineer);
+        employeeInput()
+    })
+}
+employeeInput()
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
